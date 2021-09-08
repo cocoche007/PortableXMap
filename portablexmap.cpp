@@ -1,11 +1,11 @@
-#include <QPainter>
 #include <QFile>
+#include <QPainter>
 #include <QTextStream>
+
 #include "portablexmap.h"
 
 
-PortableXMap::PortableXMap(QWidget *parent) :
-    QWidget(parent)
+PortableXMap::PortableXMap(QWidget *parent) : QWidget(parent)
 {
     nomFichier  = "";
     typeFichier = TYPE_INCONNU;
@@ -14,80 +14,80 @@ PortableXMap::PortableXMap(QWidget *parent) :
 }
 
 
-void PortableXMap::paintEvent( QPaintEvent *)
+void PortableXMap::paintEvent(QPaintEvent *)
 {
-    QPainter painter( this);
+    QPainter painter(this);
     int      i;
     int      j;
 
-    if ( typeFichier != TYPE_INCONNU )
+    if (typeFichier != TYPE_INCONNU)
     {
-        setFixedSize( x, y);
+        setFixedSize(x, y);
 
-        for ( i = 0 ; i < x ; i++ )
+        for (i = 0; i < x; i++)
         {
-            for ( j = 0 ; j < y ; j++ )
+            for (j = 0; j < y; j++)
             {
-                painter.setPen( QColor( image[i][j][0], image[i][j][1], image[i][j][2]));
-                painter.drawPoint( i, j);
+                painter.setPen(QColor(image[i][j][0], image[i][j][1], image[i][j][2]));
+                painter.drawPoint(i, j);
             }
         }
     }
 }
 
 
-void PortableXMap::traiteFichier( QString string)
+void PortableXMap::traiteFichier(QString string)
 {
-    QFile       fichier( string);
+    QFile       fichier(string);
     QString     ligne;
-    QTextStream texte( &fichier);
+    QTextStream texte(&fichier);
     char        type;
 
     nomFichier = string;
-    if ( fichier.open( QIODevice::ReadOnly | QIODevice::Text) )
+    if (fichier.open(QIODevice::ReadOnly | QIODevice::Text))
     {
         ligne = texte.readLine();
-        type = ligne[1].toAscii();
+        type  = ligne[1].toAscii();
 
         do
         {
             ligne = texte.readLine();
-        } while ( ligne[0] == QChar( '#'));
+        } while (ligne[0] == QChar('#'));
 
-        QTextStream( &ligne) >> x >> y;
+        QTextStream(&ligne) >> x >> y;
 
-        switch ( type )
+        switch (type)
         {
-            case '1' :
-                traiteFichierP1( &texte);
+            case '1':
+                traiteFichierP1(&texte);
                 break;
 
-            case '2' :
-                traiteFichierP2( &texte);
+            case '2':
+                traiteFichierP2(&texte);
                 break;
 
-            case '3' :
-                traiteFichierP3( &texte);
+            case '3':
+                traiteFichierP3(&texte);
                 break;
 
-            case '4' :
-                traiteFichierP4( &texte);
+            case '4':
+                traiteFichierP4(&texte);
                 break;
 
-            case '5' :
-                traiteFichierP5( &texte);
+            case '5':
+                traiteFichierP5(&texte);
                 break;
 
-            case '6' :
-                traiteFichierP6( &texte);
+            case '6':
+                traiteFichierP6(&texte);
                 break;
 
-            default :
+            default:
                 typeFichier = TYPE_INCONNU;
                 break;
         }
 
-        if ( typeFichier != TYPE_INCONNU )
+        if (typeFichier != TYPE_INCONNU)
             update();
 
         fichier.close();
@@ -95,7 +95,7 @@ void PortableXMap::traiteFichier( QString string)
 }
 
 
-void PortableXMap::traiteFichierP1( QTextStream *texte)
+void PortableXMap::traiteFichierP1(QTextStream *texte)
 {
     QString ligne;
     int     i;
@@ -104,13 +104,13 @@ void PortableXMap::traiteFichierP1( QTextStream *texte)
 
     typeFichier = TYPE_PBM_ASCII;
 
-    for ( j = 0 ; j < y ; j++ )
+    for (j = 0; j < y; j++)
     {
-        for ( i = 0 ; i < x ; i++ )
+        for (i = 0; i < x; i++)
         {
             *texte >> valeur;
 
-            if ( valeur )
+            if (valeur)
                 image[i][j][0] = image[i][j][1] = image[i][j][2] = 255;
             else
                 image[i][j][0] = image[i][j][1] = image[i][j][2] = 0;
@@ -119,20 +119,20 @@ void PortableXMap::traiteFichierP1( QTextStream *texte)
 }
 
 
-void PortableXMap::traiteFichierP2( QTextStream *texte)
+void PortableXMap::traiteFichierP2(QTextStream *texte)
 {
-    QString        ligne;
-    int            i;
-    int            j;
+    QString ligne;
+    int     i;
+    int     j;
 
     typeFichier = TYPE_PGM_ASCII;
 
     ligne = texte->readLine();
-    QTextStream( &ligne) >> maxVal;
+    QTextStream(&ligne) >> maxVal;
 
-    for ( j = 0 ; j < y ; j++ )
+    for (j = 0; j < y; j++)
     {
-        for ( i = 0 ; i < x ; i++ )
+        for (i = 0; i < x; i++)
         {
             *texte >> image[i][j][0];
 
@@ -144,7 +144,7 @@ void PortableXMap::traiteFichierP2( QTextStream *texte)
 }
 
 
-void PortableXMap::traiteFichierP3( QTextStream *texte)
+void PortableXMap::traiteFichierP3(QTextStream *texte)
 {
     QString ligne;
     int     i;
@@ -153,11 +153,11 @@ void PortableXMap::traiteFichierP3( QTextStream *texte)
     typeFichier = TYPE_PPM_ASCII;
 
     ligne = texte->readLine();
-    QTextStream( &ligne) >> maxVal;
+    QTextStream(&ligne) >> maxVal;
 
-    for ( j = 0 ; j < y ; j++ )
+    for (j = 0; j < y; j++)
     {
-        for ( i = 0 ; i < x ; i++ )
+        for (i = 0; i < x; i++)
         {
             *texte >> image[i][j][0];
             *texte >> image[i][j][1];
@@ -171,7 +171,7 @@ void PortableXMap::traiteFichierP3( QTextStream *texte)
 }
 
 
-void PortableXMap::traiteFichierP4( QTextStream *texte)
+void PortableXMap::traiteFichierP4(QTextStream *texte)
 {
     QString       ligne;
     int           i;
@@ -180,38 +180,36 @@ void PortableXMap::traiteFichierP4( QTextStream *texte)
     int           v;
     unsigned char valeur;
     qint64        pos;
-    QFile         fichier( nomFichier);
-    QDataStream   data( &fichier);
+    QFile         fichier(nomFichier);
+    QDataStream   data(&fichier);
 
     typeFichier = TYPE_PBM_BIN;
 
     pos = texte->pos();
 
-    if ( fichier.open( QIODevice::ReadOnly) )
+    if (fichier.open(QIODevice::ReadOnly))
     {
-        data.skipRawData( pos);
+        data.skipRawData(pos);
 
         i = j = 0;
-        for ( u = 0 ; u < x * y / 8 ; u++ )
+        for (u = 0; u < x * y / 8; u++)
         {
             data >> valeur;
-            for ( v = 7 ; v >= 0 ; v-- )
+            for (v = 7; v >= 0; v--)
             {
-                if ( (valeur >> v) & 0x01 )
+                if ((valeur >> v) & 0x01)
                     image[i][j][0] = image[i][j][1] = image[i][j][2] = 255;
                 else
                     image[i][j][0] = image[i][j][1] = image[i][j][2] = 0;
 
                 i++;
-                if ( i == x )
+                if (i == x)
                 {
                     i = 0;
                     j++;
                 }
             }
-
         }
-
 
 
         /*for ( j = 0 ; j < y ; j++ )
@@ -232,30 +230,30 @@ void PortableXMap::traiteFichierP4( QTextStream *texte)
 }
 
 
-void PortableXMap::traiteFichierP5( QTextStream *texte)
+void PortableXMap::traiteFichierP5(QTextStream *texte)
 {
     QString       ligne;
     int           i;
     int           j;
     unsigned char valeur;
     qint64        pos;
-    QFile         fichier( nomFichier);
-    QDataStream   data( &fichier);
+    QFile         fichier(nomFichier);
+    QDataStream   data(&fichier);
 
     typeFichier = TYPE_PGM_BIN;
 
     ligne = texte->readLine();
-    QTextStream( &ligne) >> maxVal;
+    QTextStream(&ligne) >> maxVal;
 
     pos = texte->pos();
 
-    if ( fichier.open( QIODevice::ReadOnly) )
+    if (fichier.open(QIODevice::ReadOnly))
     {
-        data.skipRawData( pos);
+        data.skipRawData(pos);
 
-        for ( j = 0 ; j < y ; j++ )
+        for (j = 0; j < y; j++)
         {
-            for ( i = 0 ; i < x ; i++ )
+            for (i = 0; i < x; i++)
             {
                 data >> valeur;
                 image[i][j][0] = ((unsigned char) valeur) * 255 / maxVal;
@@ -268,29 +266,29 @@ void PortableXMap::traiteFichierP5( QTextStream *texte)
     }
 }
 
-void PortableXMap::traiteFichierP6( QTextStream *texte)
+void PortableXMap::traiteFichierP6(QTextStream *texte)
 {
     QString       ligne;
     int           i;
     int           j;
     unsigned char valeur;
     qint64        pos;
-    QFile         fichier( nomFichier);
-    QDataStream   data( &fichier);
+    QFile         fichier(nomFichier);
+    QDataStream   data(&fichier);
 
     typeFichier = TYPE_PPM_BIN;
 
     ligne = texte->readLine();
-    QTextStream( &ligne) >> maxVal;
+    QTextStream(&ligne) >> maxVal;
 
     pos = texte->pos();
 
-    if ( fichier.open( QIODevice::ReadOnly) )
+    if (fichier.open(QIODevice::ReadOnly))
     {
-        data.skipRawData( pos);
-        for ( j = 0 ; j < y ; j++ )
+        data.skipRawData(pos);
+        for (j = 0; j < y; j++)
         {
-            for ( i = 0 ; i < x ; i++ )
+            for (i = 0; i < x; i++)
             {
                 data >> valeur;
                 image[i][j][0] = valeur;

@@ -11,8 +11,8 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp \
-    portablexmap.cpp
+           mainwindow.cpp \
+           portablexmap.cpp
 
-HEADERS  += mainwindow.h \
-    portablexmap.h
+HEADERS += mainwindow.h \
+           portablexmap.h

@@ -1,8 +1,8 @@
 #ifndef PORTABLEXMAP_H
 #define PORTABLEXMAP_H
 
-#include <QWidget>
 #include <QTextStream>
+#include <QWidget>
 
 
 enum
@@ -21,13 +21,13 @@ class PortableXMap : public QWidget
 {
     Q_OBJECT
 
-public :
-    PortableXMap( QWidget *parent = 0);
+public:
+    PortableXMap(QWidget *parent = 0);
 
-protected :
-    void paintEvent( QPaintEvent *event);
+protected:
+    void paintEvent(QPaintEvent *event);
 
-private :
+private:
     QString        nomFichier;
     unsigned char  typeFichier;
     unsigned short x;
@@ -35,17 +35,17 @@ private :
     int            maxVal;
     int            image[2000][2000][3];
 
-    void traiteFichierP1( QTextStream *texte);
-    void traiteFichierP2( QTextStream *texte);
-    void traiteFichierP3( QTextStream *texte);
-    void traiteFichierP4( QTextStream *texte);
-    void traiteFichierP5( QTextStream *texte);
-    void traiteFichierP6( QTextStream *texte);
+    void traiteFichierP1(QTextStream *texte);
+    void traiteFichierP2(QTextStream *texte);
+    void traiteFichierP3(QTextStream *texte);
+    void traiteFichierP4(QTextStream *texte);
+    void traiteFichierP5(QTextStream *texte);
+    void traiteFichierP6(QTextStream *texte);
 
-signals :
-    
-public slots :
-    void traiteFichier( QString string);
+signals:
+
+public slots:
+    void traiteFichier(QString string);
 };
 
 #endif // PORTABLEXMAP_H
