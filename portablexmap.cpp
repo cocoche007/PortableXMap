@@ -47,7 +47,7 @@ void PortableXMap::traiteFichier(QString string)
     if (fichier.open(QIODevice::ReadOnly | QIODevice::Text))
     {
         ligne = texte.readLine();
-        type  = ligne[1].toAscii();
+        type  = ligne.at(1).toLatin1();
 
         do
         {
