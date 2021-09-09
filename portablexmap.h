@@ -46,8 +46,8 @@ protected:
 private:
     QString        m_fileName;
     unsigned char  m_fileType;
-    unsigned short m_x;
-    unsigned short m_y;
+    unsigned short m_width;
+    unsigned short m_height;
     int            m_maxVal;
     int            m_image[2000][2000][3];
 

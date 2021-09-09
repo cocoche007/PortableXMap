@@ -29,8 +29,8 @@
 PortableXMap::PortableXMap(QWidget *parent) : QWidget(parent),
                                               m_fileName(""),
                                               m_fileType(TYPE_UNKNOWN),
-                                              m_x(0),
-                                              m_y(0),
+                                              m_width(0),
+                                              m_height(0),
                                               m_maxVal(0),
                                               m_image({0})
 {
@@ -66,7 +66,7 @@ void PortableXMap::processFile(QString fileName)
             line = text.readLine();
         } while (line[0] == QChar('#'));
 
-        QTextStream(&line) >> m_x >> m_y;
+        QTextStream(&line) >> m_width >> m_height;
 
         switch (type)
         {
@@ -123,14 +123,14 @@ void PortableXMap::paintEvent(QPaintEvent *)
 
     if (m_fileType != TYPE_UNKNOWN)
     {
-        setFixedSize(m_x, m_y);
+        setFixedSize(m_width, m_height);
 
-        for (int i = 0; i < m_x; i++)
+        for (int x = 0; x < m_width; x++)
         {
-            for (int j = 0; j < m_y; j++)
+            for (int y = 0; y < m_height; y++)
             {
-                painter.setPen(QColor(m_image[i][j][0], m_image[i][j][1], m_image[i][j][2]));
-                painter.drawPoint(i, j);
+                painter.setPen(QColor(m_image[x][y][0], m_image[x][y][1], m_image[x][y][2]));
+                painter.drawPoint(x, y);
             }
         }
     }
@@ -154,16 +154,16 @@ void PortableXMap::processFileP1(QTextStream *text)
 
     m_fileType = TYPE_PBM_ASCII;
 
-    for (int j = 0; j < m_y; j++)
+    for (int y = 0; y < m_height; y++)
     {
-        for (int i = 0; i < m_x; i++)
+        for (int x = 0; x < m_width; x++)
         {
             *text >> value;
 
             if (value)
-                m_image[i][j][0] = m_image[i][j][1] = m_image[i][j][2] = 255;
+                m_image[x][y][0] = m_image[x][y][1] = m_image[x][y][2] = 255;
             else
-                m_image[i][j][0] = m_image[i][j][1] = m_image[i][j][2] = 0;
+                m_image[x][y][0] = m_image[x][y][1] = m_image[x][y][2] = 0;
         }
     }
 }
@@ -185,15 +185,15 @@ void PortableXMap::processFileP2(QTextStream *text)
     line = text->readLine();
     QTextStream(&line) >> m_maxVal;
 
-    for (int j = 0; j < m_y; j++)
+    for (int y = 0; y < m_height; y++)
     {
-        for (int i = 0; i < m_x; i++)
+        for (int x = 0; x < m_width; x++)
         {
-            *text >> m_image[i][j][0];
+            *text >> m_image[x][y][0];
 
-            m_image[i][j][0] = (m_image[i][j][0] * 255) / m_maxVal;
+            m_image[x][y][0] = (m_image[x][y][0] * 255) / m_maxVal;
 
-            m_image[i][j][2] = m_image[i][j][1] = m_image[i][j][0];
+            m_image[x][y][2] = m_image[x][y][1] = m_image[x][y][0];
         }
     }
 }
@@ -215,17 +215,17 @@ void PortableXMap::processFileP3(QTextStream *text)
     line = text->readLine();
     QTextStream(&line) >> m_maxVal;
 
-    for (int j = 0; j < m_y; j++)
+    for (int y = 0; y < m_height; y++)
     {
-        for (int i = 0; i < m_x; i++)
+        for (int x = 0; x < m_width; x++)
         {
-            *text >> m_image[i][j][0];
-            *text >> m_image[i][j][1];
-            *text >> m_image[i][j][2];
+            *text >> m_image[x][y][0];
+            *text >> m_image[x][y][1];
+            *text >> m_image[x][y][2];
 
-            m_image[i][j][0] = (m_image[i][j][0] * 255) / m_maxVal;
-            m_image[i][j][1] = (m_image[i][j][1] * 255) / m_maxVal;
-            m_image[i][j][2] = (m_image[i][j][2] * 255) / m_maxVal;
+            m_image[x][y][0] = (m_image[x][y][0] * 255) / m_maxVal;
+            m_image[x][y][1] = (m_image[x][y][1] * 255) / m_maxVal;
+            m_image[x][y][2] = (m_image[x][y][2] * 255) / m_maxVal;
         }
     }
 }
@@ -252,12 +252,12 @@ void PortableXMap::processFileP4(QTextStream *text)
 
     if (file.open(QIODevice::ReadOnly))
     {
-        int i = 0;
-        int j = 0;
+        int x = 0;
+        int y = 0;
 
         data.skipRawData(pos);
 
-        for (int u = 0; u < m_x * m_y / 8; u++)
+        for (int u = 0; u < m_width * m_height / 8; u++)
         {
             unsigned char value;
 
@@ -265,31 +265,31 @@ void PortableXMap::processFileP4(QTextStream *text)
             for (int v = 7; v >= 0; v--)
             {
                 if ((value >> v) & 0x01)
-                    m_image[i][j][0] = m_image[i][j][1] = m_image[i][j][2] = 255;
+                    m_image[x][y][0] = m_image[x][y][1] = m_image[x][y][2] = 255;
                 else
-                    m_image[i][j][0] = m_image[i][j][1] = m_image[i][j][2] = 0;
+                    m_image[x][y][0] = m_image[x][y][1] = m_image[x][y][2] = 0;
 
-                i++;
-                if (i == m_x)
+                x++;
+                if (x == m_width)
                 {
-                    i = 0;
-                    j++;
+                    x = 0;
+                    y++;
                 }
             }
         }
 
-        /*for ( j = 0 ; j < m_y ; j++ )
+        /*for ( y = 0 ; y < m_height ; y++ )
         {
-            for ( i = 0 ; i < m_x ; i++ )
+            for ( x = 0 ; x < m_width ; x++ )
             {
                 unsigned char value;
 
                 data >> value;
 
                 if ( value )
-                    m_image[i][j][0] = m_image[i][j][1] = m_image[i][j][2] = 255;
+                    m_image[x][y][0] = m_image[x][y][1] = m_image[x][y][2] = 255;
                 else
-                    m_image[i][j][0] = m_image[i][j][1] = m_image[i][j][2] = 0;
+                    m_image[x][y][0] = m_image[x][y][1] = m_image[x][y][2] = 0;
             }
         }*/
 
@@ -323,16 +323,16 @@ void PortableXMap::processFileP5(QTextStream *text)
     {
         data.skipRawData(pos);
 
-        for (int j = 0; j < m_y; j++)
+        for (int y = 0; y < m_height; y++)
         {
-            for (int i = 0; i < m_x; i++)
+            for (int x = 0; x < m_width; x++)
             {
                 unsigned char value;
 
                 data >> value;
-                m_image[i][j][0] = ((unsigned char) value) * 255 / m_maxVal;
-                m_image[i][j][0] = (unsigned char) value;
-                m_image[i][j][2] = m_image[i][j][1] = m_image[i][j][0];
+                m_image[x][y][0] = ((unsigned char) value) * 255 / m_maxVal;
+                m_image[x][y][0] = (unsigned char) value;
+                m_image[x][y][2] = m_image[x][y][1] = m_image[x][y][0];
             }
         }
 
@@ -365,22 +365,22 @@ void PortableXMap::processFileP6(QTextStream *text)
     if (file.open(QIODevice::ReadOnly))
     {
         data.skipRawData(pos);
-        for (int j = 0; j < m_y; j++)
+        for (int y = 0; y < m_height; y++)
         {
-            for (int i = 0; i < m_x; i++)
+            for (int x = 0; x < m_width; x++)
             {
                 unsigned char value;
 
                 data >> value;
-                m_image[i][j][0] = value;
+                m_image[x][y][0] = value;
                 data >> value;
-                m_image[i][j][1] = value;
+                m_image[x][y][1] = value;
                 data >> value;
-                m_image[i][j][2] = value;
+                m_image[x][y][2] = value;
 
-                m_image[i][j][0] = (m_image[i][j][0] * 255) / m_maxVal;
-                m_image[i][j][1] = (m_image[i][j][1] * 255) / m_maxVal;
-                m_image[i][j][2] = (m_image[i][j][2] * 255) / m_maxVal;
+                m_image[x][y][0] = (m_image[x][y][0] * 255) / m_maxVal;
+                m_image[x][y][1] = (m_image[x][y][1] * 255) / m_maxVal;
+                m_image[x][y][2] = (m_image[x][y][2] * 255) / m_maxVal;
             }
         }
 
