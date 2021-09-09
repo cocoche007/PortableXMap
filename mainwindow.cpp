@@ -1,3 +1,13 @@
+//------------------------------------------------------------------------------
+//! @file MainWindow.cpp
+//! @brief Definition file of the MainWindow class
+//! @author Fabrice Cochet
+//! @version 1.0
+//------------------------------------------------------------------------------
+
+//------------------------------------------------------------------------------
+// Include(s) :
+
 #include <QAction>
 #include <QApplication>
 #include <QFileDialog>
@@ -9,6 +19,16 @@
 #include "portablexmap.h"
 
 
+//------------------------------------------------------------------------------
+// Public Method(s):
+
+//------------------------------------------------------------------------------
+//! MainWindow constructor
+//!
+//! @param parent The parent widget
+//!
+//! @return The created object
+//------------------------------------------------------------------------------
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
@@ -34,6 +54,13 @@ MainWindow::MainWindow(QWidget *parent)
 }
 
 
+//------------------------------------------------------------------------------
+//! Destructor
+//!
+//! @param _
+//!
+//! @return _
+//------------------------------------------------------------------------------
 MainWindow::~MainWindow()
 {
 }

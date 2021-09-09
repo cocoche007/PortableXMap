@@ -1,9 +1,30 @@
+//------------------------------------------------------------------------------
+//! @file portablexmap.cpp
+//! @brief Definition file of the PortableXMap class
+//! @author Fabrice Cochet
+//! @version 1.0
+//------------------------------------------------------------------------------
+
+//------------------------------------------------------------------------------
+// Include(s):
+
 #include <QFile>
 #include <QPainter>
 #include <QTextStream>
 
 #include "portablexmap.h"
 
+
+//------------------------------------------------------------------------------
+// Public Method(s):
+
+//------------------------------------------------------------------------------
+//! CEdgeDetection constructor for a given parent widget
+//!
+//! @param parent The parent widget
+//!
+//! @return The created object
+//------------------------------------------------------------------------------
 
 PortableXMap::PortableXMap(QWidget *parent) : QWidget(parent),
                                               m_fileName(""),
@@ -16,26 +37,16 @@ PortableXMap::PortableXMap(QWidget *parent) : QWidget(parent),
 }
 
 
-void PortableXMap::paintEvent(QPaintEvent *)
-{
-    QPainter painter(this);
+//------------------------------------------------------------------------------
+// Public Slot Method(s):
 
-    if (m_fileType != TYPE_UNKNOWN)
-    {
-        setFixedSize(m_x, m_y);
-
-        for (int i = 0; i < m_x; i++)
-        {
-            for (int j = 0; j < m_y; j++)
-            {
-                painter.setPen(QColor(m_image[i][j][0], m_image[i][j][1], m_image[i][j][2]));
-                painter.drawPoint(i, j);
-            }
-        }
-    }
-}
-
-
+//------------------------------------------------------------------------------
+//! The slot method in order to process a file by its name
+//!
+//! @param fileName The file name
+//!
+//! @return _
+//------------------------------------------------------------------------------
 void PortableXMap::processFile(QString fileName)
 {
     QFile       file(fileName);
@@ -96,6 +107,46 @@ void PortableXMap::processFile(QString fileName)
 }
 
 
+//------------------------------------------------------------------------------
+// Protected Method(s):
+
+//------------------------------------------------------------------------------
+//! The paint event hook
+//!
+//! @param _ ?
+//!
+//! @return _
+//------------------------------------------------------------------------------
+void PortableXMap::paintEvent(QPaintEvent *)
+{
+    QPainter painter(this);
+
+    if (m_fileType != TYPE_UNKNOWN)
+    {
+        setFixedSize(m_x, m_y);
+
+        for (int i = 0; i < m_x; i++)
+        {
+            for (int j = 0; j < m_y; j++)
+            {
+                painter.setPen(QColor(m_image[i][j][0], m_image[i][j][1], m_image[i][j][2]));
+                painter.drawPoint(i, j);
+            }
+        }
+    }
+}
+
+
+//------------------------------------------------------------------------------
+// Private Method(s):
+
+//------------------------------------------------------------------------------
+//! Process a P1 file by its content
+//!
+//! @param text The content to process
+//!
+//! @return _
+//------------------------------------------------------------------------------
 void PortableXMap::processFileP1(QTextStream *text)
 {
     QString line;
@@ -118,6 +169,13 @@ void PortableXMap::processFileP1(QTextStream *text)
 }
 
 
+//------------------------------------------------------------------------------
+//! Process a P2 file by its content
+//!
+//! @param text The content to process
+//!
+//! @return _
+//------------------------------------------------------------------------------
 void PortableXMap::processFileP2(QTextStream *text)
 {
     QString line;
@@ -141,6 +199,13 @@ void PortableXMap::processFileP2(QTextStream *text)
 }
 
 
+//------------------------------------------------------------------------------
+//! Process a P3 file by its content
+//!
+//! @param text The content to process
+//!
+//! @return _
+//------------------------------------------------------------------------------
 void PortableXMap::processFileP3(QTextStream *text)
 {
     QString line;
@@ -166,6 +231,13 @@ void PortableXMap::processFileP3(QTextStream *text)
 }
 
 
+//------------------------------------------------------------------------------
+//! Process a P4 file by its content
+//!
+//! @param text The content to process
+//!
+//! @return _
+//------------------------------------------------------------------------------
 void PortableXMap::processFileP4(QTextStream *text)
 {
     QString line;
@@ -226,6 +298,13 @@ void PortableXMap::processFileP4(QTextStream *text)
 }
 
 
+//------------------------------------------------------------------------------
+//! Process a P5 file by its content
+//!
+//! @param text The content to process
+//!
+//! @return _
+//------------------------------------------------------------------------------
 void PortableXMap::processFileP5(QTextStream *text)
 {
     QString     line;
@@ -261,6 +340,14 @@ void PortableXMap::processFileP5(QTextStream *text)
     }
 }
 
+
+//------------------------------------------------------------------------------
+//! Process a P6 file by its content
+//!
+//! @param text The content to process
+//!
+//! @return _
+//------------------------------------------------------------------------------
 void PortableXMap::processFileP6(QTextStream *text)
 {
     QString     line;

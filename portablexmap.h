@@ -1,9 +1,22 @@
+//------------------------------------------------------------------------------
+//! @file portablexmap.h
+//! @brief Header file of the PortableXMap class
+//! @author Fabrice Cochet
+//! @version 1.0
+//------------------------------------------------------------------------------
+
 #ifndef PORTABLEXMAP_H
 #define PORTABLEXMAP_H
+
+//------------------------------------------------------------------------------
+// Include(s) :
 
 #include <QTextStream>
 #include <QWidget>
 
+
+//------------------------------------------------------------------------------
+// Enumeration(s) :
 
 enum
 {
@@ -16,6 +29,9 @@ enum
     TYPE_PPM_BIN
 };
 
+
+//------------------------------------------------------------------------------
+// Classe(s) :
 
 class PortableXMap : public QWidget
 {
