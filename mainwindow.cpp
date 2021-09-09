@@ -12,25 +12,25 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
-    QWidget *     zoneCentrale  = new QWidget;
-    QFileDialog * fileDialog    = new QFileDialog(this, Qt::Dialog);
-    QMenu *       menuFichier   = menuBar()->addMenu(tr("&Fichier"));
-    QAction *     actionOuvrir  = new QAction(tr("&Ouvrir"), this);
-    QAction *     actionQuitter = new QAction(tr("&Quitter"), this);
-    QVBoxLayout * layout        = new QVBoxLayout;
-    PortableXMap *portableXmap  = new PortableXMap;
+    QWidget *     centralZone  = new QWidget;
+    QFileDialog * fileDialog   = new QFileDialog(this, Qt::Dialog);
+    QMenu *       fileMenu     = menuBar()->addMenu(tr("&File"));
+    QAction *     openAction   = new QAction(tr("&Open"), this);
+    QAction *     quitAction   = new QAction(tr("&Quit"), this);
+    QVBoxLayout * layout       = new QVBoxLayout;
+    PortableXMap *portableXmap = new PortableXMap;
 
-    menuFichier->addAction(actionOuvrir);
-    menuFichier->addAction(actionQuitter);
+    fileMenu->addAction(openAction);
+    fileMenu->addAction(quitAction);
 
-    connect(actionOuvrir, SIGNAL(triggered()), fileDialog, SLOT(open()));
-    connect(fileDialog, SIGNAL(fileSelected(QString)), portableXmap, SLOT(traiteFichier(QString)));
-    connect(actionQuitter, SIGNAL(triggered()), qApp, SLOT(quit()));
+    connect(openAction, SIGNAL(triggered()), fileDialog, SLOT(open()));
+    connect(fileDialog, SIGNAL(fileSelected(QString)), portableXmap, SLOT(processFile(QString)));
+    connect(quitAction, SIGNAL(triggered()), qApp, SLOT(quit()));
 
     layout->addWidget(portableXmap);
-    zoneCentrale->setLayout(layout);
+    centralZone->setLayout(layout);
 
-    setCentralWidget(zoneCentrale);
+    setCentralWidget(centralZone);
 }
 
 

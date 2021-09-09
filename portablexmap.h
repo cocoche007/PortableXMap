@@ -7,7 +7,7 @@
 
 enum
 {
-    TYPE_INCONNU,
+    TYPE_UNKNOWN,
     TYPE_PBM_ASCII,
     TYPE_PGM_ASCII,
     TYPE_PPM_ASCII,
@@ -28,24 +28,24 @@ protected:
     void paintEvent(QPaintEvent *event);
 
 private:
-    QString        nomFichier;
-    unsigned char  typeFichier;
-    unsigned short x;
-    unsigned short y;
-    int            maxVal;
-    int            image[2000][2000][3];
+    QString        m_fileName;
+    unsigned char  m_fileType;
+    unsigned short m_x;
+    unsigned short m_y;
+    int            m_maxVal;
+    int            m_image[2000][2000][3];
 
-    void traiteFichierP1(QTextStream *texte);
-    void traiteFichierP2(QTextStream *texte);
-    void traiteFichierP3(QTextStream *texte);
-    void traiteFichierP4(QTextStream *texte);
-    void traiteFichierP5(QTextStream *texte);
-    void traiteFichierP6(QTextStream *texte);
+    void processFileP1(QTextStream *text);
+    void processFileP2(QTextStream *text);
+    void processFileP3(QTextStream *text);
+    void processFileP4(QTextStream *text);
+    void processFileP5(QTextStream *text);
+    void processFileP6(QTextStream *text);
 
 signals:
 
 public slots:
-    void traiteFichier(QString string);
+    void processFile(QString fileName);
 };
 
 #endif // PORTABLEXMAP_H
